@@ -1,29 +1,27 @@
 pipeline{
-    agent any
-    environment {
-        root = "/usr/local/go/bin/go"
-        branch = "master"
-        scmUrl = "https://github.com/inesistiq/sample-golang-jenkins.git"
+    agent {
+        dockerfile true
     }
+
     stages{
         stage('Go Version'){
             steps{
-                sh "${root} version"
+                sh "go --version"
             }
         }
         stage('Git Clone'){
             steps {
-               git branch: "${branch}", url:"${scmUrl}"
+               git branch: "master", url:"https://github.com/inesistiq/sample-golang-jenkins.git"
             }
         }
         stage('Go Test'){
             steps {
-              sh "${root} test ./... -cover"
+              sh "go test ./... -cover"
             }
         }
          stage('Go Build'){
             steps {
-              sh "${root} build ./..."
+              sh "go build ./..."
             }
         }
     }
