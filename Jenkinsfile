@@ -1,29 +1,19 @@
 pipeline{
-    agent {  
-        dockerfile {
-        filename 'Dockerfile'
-        } 
-    }
-
+    agent any
     stages{
-        stage('Go Version'){
-            steps{
-                sh "go --version"
-            }
-        }
         stage('Git Clone'){
             steps {
                git branch: "master", url:"https://github.com/inesistiq/sample-golang-jenkins.git"
             }
         }
-        stage('Go Test'){
+        stage('Go Docker'){
             steps {
-              sh "go test ./... -cover"
+              sh "docker build -t sample-golang-jenkins ."
             }
         }
-         stage('Go Build'){
+         stage('Deployment'){
             steps {
-              sh "go build ./..."
+              echo "DEPLOY SUCCESS"
             }
         }
     }

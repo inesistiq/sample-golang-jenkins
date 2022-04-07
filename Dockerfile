@@ -4,7 +4,8 @@ RUN apk update && apk add --no-cache git
 WORKDIR /src
 COPY . .
 RUN go mod tidy
-RUN go test --coverage
+RUN go version
+RUN go test ./... -cover
 RUN go build -o sample-golang-jenkins
 
 #STEP 2
