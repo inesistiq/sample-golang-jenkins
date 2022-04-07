@@ -1,5 +1,10 @@
 pipeline{
-    agent { Dockerfile true }
+    agent {  
+        dockerfile {
+        filename 'Dockerfile'
+        } 
+    }
+
     stages{
         stage('Go Version'){
             steps{
