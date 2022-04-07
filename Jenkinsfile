@@ -1,17 +1,48 @@
-node {
-    // Ensure the desired Go version is installed
-    def root = "/usr/local/go/bin/go"
-
-    // Export environment variables pointing to the directory where Go was installed
-    stage 'Checkout'
-    git url:'https://github.com/inesistiq/sample-golang-jenkins.git'
-    
-    stage 'preTest'
-    sh "${root} version"
-    
-    stage 'Test'
-    sh "${root} test ./... -cover"
-    
-    stage 'Build'
-    sh "${root} build ./..."
+pipeline{
+    agent any
+    environment {
+        root = "/usr/local/go/bin/go"
+        branch = "master"
+        scmUrl = "https://github.com/inesistiq/sample-golang-jenkins.git"
+    }
+    stages{
+        stage('Go Version'){
+            steps{
+                sh "${root} version"
+            }
+        }
+        stage('Git Clone'){
+            steps {
+               git branch: "${branch}", url:"${scmUrl}"
+            }
+        }
+        stage('Go Test'){
+            steps {
+              sh "${root} test ./... -cover"
+            }
+        }
+         stage('Go Build'){
+            steps {
+              sh "${root} build ./..."
+            }
+        }
+    }
+   
 }
+
+// node {
+    
+//     def root = "/usr/local/go/bin/go"
+
+//     stage 'Checkout'
+//     git url:'https://github.com/inesistiq/sample-golang-jenkins.git'
+    
+//     stage 'preTest'
+//     sh "${root} version"
+    
+//     stage 'Test'
+//     sh "${root} test ./... -cover"
+    
+//     stage 'Build'
+//     sh "${root} build ./..."
+// }
